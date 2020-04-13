@@ -1,0 +1,52 @@
+/*
+ * Determine whether an integer is a palindrome. An integer is a palindrome when it reads the same backward as forward.
+ *
+ * Example 1:
+ * 
+ * Input: 121
+ * Output: true
+ * Example 2:
+ * 
+ * Input: -121
+ * Output: false
+ * Explanation: From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome.
+ * Example 3:
+ * 
+ * Input: 10
+ * Output: false
+ * Explanation: Reads 01 from right to left. Therefore it is not a palindrome.
+ */
+ 
+ #include <stdio.h>
+#include <stdbool.h>
+#include <strings.h> 
+#include <stdlib.h>
+
+bool isPalindrome(int x){
+    
+    int stringLen = 0;
+    bool arr[2] = {true, false};
+    char intStr[12]; // size 11 because int is 10 digits in base 10 and 
+                     // 1 extra digit for sign and string terminal
+    
+    // convert int to char string
+    sprintf(intStr, "%d", x);
+    stringLen = strlen(intStr);
+    //printf("x: %d, string: %s, strlen: %d", x, intStr, stringLen);
+    
+    // edge cases:
+    // signs will cause algorithm to fail and an empty string is not a palindrome
+    if(intStr[0] == '-' || intStr[0] == '+' || stringLen == 0){
+        return arr[1];
+    }
+    
+    // compare back char to front char 
+    for(int i = 0; i < stringLen/2; i++){
+        int lastPlace = stringLen - 1 - i;
+        if(intStr[lastPlace] != intStr[i]){
+            return arr[1];
+        }
+    }
+    
+    return arr[0];
+}
