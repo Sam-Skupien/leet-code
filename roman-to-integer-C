@@ -39,11 +39,10 @@ int romanToInt(char *s){
         }
         
         if(*s == 'C'){   
-            ++s;
+            s++;
             if(*s == 'M'){
                 retnum += 900;
                 s++;
-                continue;
                 
             } else if(*s == 'D'){
                 retnum += 400;
@@ -63,9 +62,7 @@ int romanToInt(char *s){
         }
         
         if(*s == 'X'){
-            
             s++;
-            
             if(*s == 'C'){
                 retnum += 90;
                 s++;
@@ -86,7 +83,7 @@ int romanToInt(char *s){
         }
         
         if(*s == 'I'){ 
-            ++s;  
+            s++;  
             if(*s == 'X'){
                 retnum += 9;
                 s++;
