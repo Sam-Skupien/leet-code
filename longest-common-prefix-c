@@ -1,0 +1,74 @@
+/*
+Write a function to find the longest common prefix string amongst an array of strings.
+
+If there is no common prefix, return an empty string "".
+
+Example 1:
+
+Input: ["flower","flow","flight"]
+Output: "fl"
+Example 2:
+
+Input: ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+Note:
+
+All given inputs are in lowercase letters a-z.
+
+**** NOTE *****
+ This function only works when the number of strings given is fixed as variables cannot be dynamically allocated in C.
+/*
+
+#include <stdlib.>
+#include <stdio.h>
+#include <strings.h>
+
+char * longestCommonPrefix(char ** strs, int strsSize){
+    
+    // determine size of longest string to create arrays
+    
+    int longestStr = 0;
+    for(int i = 0; i < strsSize; ++i){
+        
+        int temp = strlen(strs[i]);
+        
+        if(temp > longestStr){
+            longestStr = temp;
+        }
+    }
+    
+    //printf("Longest string in array: %d\n", longestStr);
+    
+    // return string holding prefix will only be as large as longest word
+    char retString[longestStr+1]; 
+    
+    // create arrays to hold individual strings, add +1 for null char
+    char str1[longestStr+1];
+    char str2[longestStr+1];
+    char str3[longestStr+1];
+    
+    // copy strings from strs into new arrays
+    strcpy(str1, strs[0]);
+    strcpy(str2, strs[1]);
+    strcpy(str3, strs[2]);
+
+    // compare prefixes and add to retstring if all are equal
+    for(int i = 0; i < longestStr; ++i){
+        //printf("index i: %d str1: %c str2: %c str3: %c\n", i, str1[i], str2[i], str3[i]);
+        if((str1[i] == str2[i]) && ( str2[i] == str3[i])){
+            
+            // create temp string to hold char because strcat can't append single char
+            char tmpStr[2];
+            tmpStr[0] = str1[i];
+            strcat(retString, tmpStr);
+            tmpStr[0] = "";
+        }
+    }
+    
+    printf("%s", retString);
+    
+    char* returnString = (char*)malloc(sizeof(retString + 1));
+    strcpy(returnString, retString);
+    return returnString;
+}
