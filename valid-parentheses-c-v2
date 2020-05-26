@@ -1,0 +1,47 @@
+/*
+ Does not work with string: Input: "()[]{}"
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <stdbool.h>
+
+
+bool isValid(char * s){
+    
+    // empty string is valid, return true
+    if(*s == '\0'){
+        return true;
+    }
+        
+    int strSize = strlen(s);
+    printf("string size %d\n", strSize);
+    
+    //if strSize mod 2 is true then odd number of characters, string is false
+    if(strSize % 2){
+        return false;
+    }
+    
+    char charArray[strSize];
+    
+    // create array to iterate through
+    for(size_t i = 0; i < strSize; ++i){
+        charArray[i] = *s; 
+        //printf("%c", charArray[i]);
+        //printf("%c", *s);
+        s++;
+    }
+    
+    int last = sizeof(charArray);
+    for(size_t i = 0; i < strSize/2; ++i){
+        
+        int tmpLast = last - 1 - i;
+        printf("%c %c", charArray[i], charArray[tmpLast]);
+        if(!(charArray[i] != charArray[tmpLast])) {
+            return false;
+        }
+    }
+    
+    return true;
+}
