@@ -1,0 +1,99 @@
+/*
+Given a string containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+Open brackets must be closed by the same type of brackets.
+Open brackets must be closed in the correct order.
+Note that an empty string is also considered valid.
+
+Example 1:
+
+Input: "()"
+Output: true
+Example 2:
+
+Input: "()[]{}"
+Output: true
+Example 3:
+
+Input: "(]"
+Output: false
+Example 4:
+
+Input: "([)]"
+Output: false
+Example 5:
+
+Input: "{[]}"
+Output: true
+
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <stdbool.h>
+
+
+bool isValid(char * s){
+    
+    // empty string is valid, return true
+    if(*s == '\0'){
+        return true;
+    }
+    
+    int lPar = 0; 
+    int rPar = 0;
+    int lBrace = 0; 
+    int rBrace = 0;
+    int lBrack = 0;
+    int rBrack = 0;
+    
+    while(*s != '\0'){
+        switch(*s){
+            case '(':
+                ++lPar;
+                //puts("lpar++");
+                break;
+            case '{':
+                ++lBrace;
+                //puts("lbrace++");
+                break;
+            case '[':
+                ++lBrack;
+                //puts("lbrack++");
+                break;
+            case ')':
+                ++rPar;
+                //puts("rpar++");
+                break;
+            case '}':
+                ++rBrace;
+                //puts("rbrace++");
+                break;
+            case ']':
+                ++rBrack;
+                //puts("rbrack++");
+                break;
+            default:
+                //puts("default");
+                break;    
+        }
+        
+        s++;
+    }
+    
+    //printf("%d %d %d %d %d %d", lPar, rPar, lBrace, rBrace, lBrack, rBrack);
+    
+    int finCountPar = (lPar - rPar);
+    int finCountBrace = (lBrace - rBrace);
+    int finCountBrack = (lBrack - rBrack);
+    
+    if((finCountPar == 0) && (finCountBrace == 0) && (finCountBrack == 0)){
+        return true;
+    } else {
+        return false;
+    }
+    
+}
