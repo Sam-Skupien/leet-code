@@ -1,0 +1,89 @@
+/* works on all strings:
+ ""
+ "()[]{}"
+ "(]"
+ "([)]"
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <strings.h>
+#include <stdbool.h>
+
+char getRHS(char c);
+
+bool isValid(char* s){
+    
+    // empty string is valid, return true
+    if(*s == '\0'){
+        return true;
+    }
+        
+    int strSize = strlen(s);
+    //printf("string size %d\n", strSize);
+    
+    //if strSize mod 2 is true then odd number of characters, string is false
+    if(strSize % 2){
+        return false;
+    }
+    
+    // convert to char array for manipulation later
+    char charArray[strSize];
+    for(size_t i = 0; i < strSize; ++i){
+        charArray[i] = *s++;
+    }
+    
+    printf("char array: %s", charArray);
+    int flag = 1;
+    char* c = s;
+    while((*c != '\0') && flag){
+            
+        // get matching rhs char from current char
+        char rightSide = getRHS(*c);
+        printf("while getrhs: %c\n", rightSide);
+
+        // test char next to current char for a rhs match 
+        // if c matches right side string is of the form "{}()[]"
+        // if c does not match right side char assume string is of the form "[[[]]]"
+        // and set flag to 1 to move into testing alternate ends of array
+        c++; 
+        if(*c == rightSide){
+            c++;
+            break;
+        } else {
+            flag = 0;
+        }
+    }
+    
+    if(!flag){
+    char* d = s;
+        for(size_t i = 0; i < strSize/2; ++i){
+
+            char rightSide = getRHS(*d);
+            if(rightSide == charArray[strSize - 1 - i]){
+                ++d;
+                ++i;
+                break;
+            } else {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+char getRHS(char c){
+    switch(c){
+        case '(':
+            return ')';
+            break;
+        case '{':
+            return '}';
+            break;
+        case '[':
+            return ']';
+            break;
+        default:
+            return '\0';
+    }
+}
