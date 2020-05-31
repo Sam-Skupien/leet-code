@@ -1,0 +1,145 @@
+/*
+Merge two sorted linked lists and return it as a new list. 
+The new list should be made by splicing together the nodes of the first two lists.
+
+Example:
+
+Input: 1->2->4, 1->3->4
+Output: 1->1->2->3->4->4
+*/
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int comparetor(const void * a, const void * b);
+struct ListNode* createNode(int val, struct ListNode* next);
+struct ListNode* prependNode(struct ListNode* head, int data);
+
+struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2){
+    
+    // base cases
+    // if l1 is null return l2
+    if(l1 == NULL){
+        return l2;
+    }
+    
+    // if l2 is null return lq
+    if(l2 == NULL){
+        return l1;
+    }
+    
+    // if l1 and l2 are null return null list
+    if((l1 == NULL) && (l2 == NULL)){
+        return l1;
+    }
+    
+    int l1Count = 0;
+    struct ListNode* curr1 = l1;
+    while(curr1 != NULL){
+        ++l1Count;
+        curr1 = curr1->next;
+    }
+    
+    int l2Count = 0;
+    struct ListNode* curr2 = l2;
+    while(curr2 != NULL){
+        ++l2Count;
+        curr2 = curr2->next;
+    }
+    
+    printf("l1 count: %d, l2 count %d\n", l1Count, l2Count);
+    
+    int arrL1[l1Count];
+    int arrL2[l2Count];
+    
+    for(int i = 0; i < l1Count; ++i){
+        arrL1[i] = l1->val;
+        l1 = l1->next;
+        //printf("%d", arrL1[i]);
+    }
+    
+    //puts("");
+    
+    for(int i = 0; i < l2Count; ++i){
+        arrL2[i] = l2->val;
+        l2 = l2->next;
+        //printf("%d", arrL2[i]);
+    }
+    
+    //puts("");
+     
+    int fullCount = l1Count + l2Count;
+    int fullArray[fullCount];
+    
+    for(int i = 0; i < fullCount;){
+        
+        for(int j = 0; j < l1Count; ++j){
+            fullArray[i] = arrL1[j];
+            printf("%d", fullArray[i]);
+            ++i;
+        }
+        
+        for(int k = 0; k < l2Count; ++k){
+            fullArray[i] = arrL2[k];
+            printf("%d", fullArray[i]);
+            ++i;
+        }
+    }
+    
+    //puts("");
+    
+    // sort full array
+    qsort(fullArray, fullCount, sizeof(int), comparetor);
+    
+    /*
+    for(int i = 0; i < fullCount; ++i){
+        int tmp = fullCount - 1 - i;
+        printf("%d", fullArray[tmp]);
+    }*/
+    
+    struct ListNode* retArray = NULL;
+    
+    for(int i = 0; i < fullCount; ++i){
+        
+        //start from back of array and decend to get proper LL order
+        int tmp = fullCount - 1 - i;
+        
+        retArray = prependNode(retArray, fullArray[tmp]);
+           
+    }
+    return retArray;
+}
+
+int comparetor (const void * a, const void * b){
+		return ( *(int*)a - *(int*)b );
+}
+
+struct ListNode* createNode(int val, struct ListNode* next){
+    
+    struct ListNode* temp = (struct ListNode*)malloc(sizeof(struct ListNode));
+    if(temp == NULL){
+        printf("Could not create node");
+        exit(0);
+    }
+    
+    temp->val = val;
+    temp->next = next;
+    
+    return temp;
+}
+
+struct ListNode* prependNode(struct ListNode* head, int data){
+    
+    struct ListNode* node = createNode(data, head);
+    head = node;
+    return head;
+}
