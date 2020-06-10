@@ -1,0 +1,41 @@
+/*
+
+*/
+
+    /**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+#include <stdio.h>
+#include <strings.h>
+
+void swapNodes(struct TreeNode* node);
+struct TreeNode* invertTree(struct TreeNode* root){ 
+    
+    if(root == NULL){
+        return root;
+    }
+    
+    swapNodes(root);
+
+    return root;
+}
+
+void swapNodes(struct TreeNode* node){
+    if((node->left == NULL) && (node->right == NULL)) { 
+       ; 
+    } else {
+      
+        struct TreeNode* temp = node->left;
+        node->left = node->right;
+        node->right = temp;
+        swapNodes(node->left);
+        swapNodes(node->right);
+    }
+   
+}
+
