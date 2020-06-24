@@ -1,0 +1,101 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ 
+ Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.
+Example 1:
+Input:
+    3
+   / \
+  9  20
+    /  \
+   15   7
+Output: [3, 14.5, 11]
+Explanation:
+The average value of nodes on level 0 is 3,  on level 1 is 14.5, and on level 2 is 11. Hence return [3, 14.5, 11].
+Note:
+The range of node's value is in the range of 32-bit signed integer.
+ */
+
+
+/**
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+int getHeight(struct TreeNode* node);
+void processLevel(struct TreeNode* node, int level, int treeLevel, double* retArray, double* sumArray);
+
+double* averageOfLevels(struct TreeNode* root, int* returnSize){
+    
+    if(root == NULL){
+        *returnSize = 0;
+        return NULL;
+    }
+
+    // get height of tree
+    //printf("Depth: %d", getHeight(root));
+    int treeHeight = getHeight(root);
+    
+    // initialize array size to be the number of levels
+    double* retArray = (double*)malloc(sizeof(double) * treeHeight);
+    double* sumArray = (double*)malloc(sizeof(double) * treeHeight + 1);
+    *returnSize = treeHeight;
+
+    //init arrays to 0
+    for(int i = 0; i < treeHeight; i++){
+        retArray[i] = 0;
+        sumArray[i] = 0;
+    }
+    
+    for(int i = 1; i <= treeHeight; i++){
+        int treeLevel = i;
+        processLevel(root, i, treeLevel, retArray, sumArray);
+    }
+    
+    // traverse through tree to get average at each level
+    // average
+    
+    for(int i = 0; i < treeHeight; i++){
+        retArray[i] /= sumArray[i];
+        //printf("%f ", sumArray[i]);
+    }
+    return retArray;
+    
+}
+
+int getHeight(struct TreeNode* node){
+    
+    if(node == NULL){
+        return 0;
+    } else {
+        int lDepth = getHeight(node->left);
+        int rDepth = getHeight(node->right);
+        
+        if(lDepth > rDepth){
+            return (lDepth + 1);
+        } else {
+            return (rDepth + 1);
+        }
+    }
+}
+
+void processLevel(struct TreeNode* node, int level, int treeLevel, double* retArray, double* sumArray){
+    
+    if(node == NULL){
+        return;
+    }
+    
+    if(level == 1){
+        //printf("val: %d ", node->val);
+        //printf(" treeLevel: %d\n", treeLevel);
+        retArray[treeLevel-1] += node->val;
+        sumArray[treeLevel-1]++;
+    } else if(level > 1){
+       
+        processLevel(node->left, level - 1, treeLevel, retArray, sumArray);
+        processLevel(node->right, level - 1, treeLevel, retArray, sumArray);
+    }
+}
