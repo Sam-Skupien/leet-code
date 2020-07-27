@@ -1,0 +1,108 @@
+https://leetcode.com/problems/binary-tree-tilt/
+
+** Note: the problem was extremely vague and the solution presented works in specific scenarious of the problem. 
+
+Given a binary tree, return the tilt of the whole tree.
+
+The tilt of a tree node is defined as the absolute difference between the sum of all left subtree node values and the sum of all right subtree node values. Null node has tilt 0.
+
+The tilt of the whole tree is defined as the sum of all nodes' tilt.
+
+Example:
+Input: 
+         1
+       /   \
+      2     3
+Output: 1
+Explanation: 
+Tilt of node 2 : 0
+Tilt of node 3 : 0
+Tilt of node 1 : |2-3| = 1
+Tilt of binary tree : 0 + 0 + 1 = 1
+
+
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     struct TreeNode *left;
+ *     struct TreeNode *right;
+ * };
+ */
+
+void processTree(struct TreeNode* node, int* totalSum);
+int processNode(struct TreeNode* node);
+int getValue(struct TreeNode* node);
+
+int findTilt(struct TreeNode* root){
+
+    int* totalSum = NULL;
+    int init = 0;
+    totalSum = &init;
+    
+    processTree(root, totalSum);
+    
+    return *totalSum;
+}
+
+void processTree(struct TreeNode* node, int* totalSum){
+    
+    *totalSum += processNode(node);
+    
+    if(node->left != NULL){
+        processTree(node->left, totalSum);
+    }
+    
+    if(node->right != NULL){
+        processTree(node->right, totalSum);
+    }
+}
+
+int processNode(struct TreeNode* node){
+    
+    int sum;
+    int lVal;
+    int rVal;
+    
+    if((node->left == NULL) && (node->right == NULL)){
+        return 0;
+    } else if (node->left == NULL){
+        lVal = 0;
+        rVal = getValue(node->right);
+        sum = lVal - rVal;
+        
+        if(sum < 0){
+            sum *= -1;
+        }
+        
+        return sum;
+        
+    } else if (node->right == NULL){
+        
+        rVal = 0;
+        lVal = getValue(node->left);
+        sum = lVal - rVal;
+        if(sum < 0){
+            sum *= -1;
+        }
+        
+        return sum;
+        
+    } else {
+        lVal = getValue(node->left);
+        rVal = getValue(node->right);
+        sum = lVal - rVal;
+        
+        if(sum < 0){
+            sum *= -1;
+        }
+    }
+    
+    return sum;
+}
+
+int getValue(struct TreeNode* node){
+    return node->val;
+}
